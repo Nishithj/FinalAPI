@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Classification</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        form {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #result {
+            text-align: center;
+            font-weight: bold;
+        }
+
+        #fileInput + label {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        #fileInput + label:hover {
+            background-color: #0056b3;
+        }
+
+        #fileLabel {
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Audio Classification</h1>
+        <form id="uploadForm" enctype="multipart/form-data">
+            <input type="file" name="file" id="fileInput" accept=".wav, .mp3, .flac" onchange="displayFileName()">
+            <label for="fileInput">Choose file</label>
+            <span id="fileLabel"></span>
+            <button type="button" onclick="uploadAudio()">Upload</button>
+        </form>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        function displayFileName() {
+            var fileInput = document.getElementById('fileInput');
+            var fileLabel = document.getElementById('fileLabel');
+            fileLabel.textContent = fileInput.files[0].name;
+        }
+
+        function uploadAudio() {
+            var formData = new FormData();
+            var fileInput = document.getElementById('fileInput').files[0];
+            formData.append('file', fileInput);
+    
+            fetch('http://127.0.0.1:5000/api', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Received response from server:', data);
+                document.getElementById('result').innerHTML = 'Predicted Class - CNN: ' + data.model1_class + '<br>' +
+                                                                'Predicted Class - LSTM: ' + data.model2_class + '<br>' +
+                                                                'Predicted Class - HYBRID: ' + data.model3_class;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+</body>
+</html>
