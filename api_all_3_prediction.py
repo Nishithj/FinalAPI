@@ -15,9 +15,9 @@ CORS(app, resources={r"/api/*": {"origins": "*"}})  # Enable CORS for all domain
 ALLOWED_EXTENSIONS = {'wav', 'mp3', 'flac'}
 
 # Load pre-trained machine learning models
-model1 = load_model("E:\\MP\\MODEL\\my_model.h5")
-model2 = load_model("C:\\Users\\HP\\OneDrive\\Desktop\\NEW\\saved_model\\lstm1.h5")
-model3 =  load_model("C:\\Users\\HP\\OneDrive\\Desktop\\NEW\\saved_model\\cnnlstm.h5")
+model1 = load_model("C:\Users\HP\OneDrive\Desktop\Final_API\models\my_model.h5")
+model2 = load_model("C:\Users\HP\OneDrive\Desktop\Final_API\models\lstm1.h5")
+model3 =  load_model("C:\\Users\\HP\\OneDrive\\Desktop\\Final_API\\models\\cnnlstm.h5")
 
 # Function to check if the file has allowed extension
 def allowed_file(filename):
